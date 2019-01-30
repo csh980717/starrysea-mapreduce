@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadPoolExecutor;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 public class StarryseaMapReduceManager {
@@ -13,12 +12,12 @@ public class StarryseaMapReduceManager {
 	private ThreadPoolTaskExecutor reducerThreadPool;
 	private List<MapperAndReduce> mapperAndReduces;
 
-	@Value("${starrysea.split.input}")
 	private String inputPath;
-	@Value("${starrysea.split.output}")
 	private String outputPath;
-	
-	public StarryseaMapReduceManager() {
+
+	public StarryseaMapReduceManager(String inputPath, String outputPath) {
+		this.inputPath = inputPath;
+		this.outputPath = outputPath;
 		init();
 	}
 
