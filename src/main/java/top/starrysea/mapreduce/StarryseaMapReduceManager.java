@@ -13,7 +13,7 @@ public class StarryseaMapReduceManager {
 
 	private ThreadPoolTaskExecutor mapperThreadPool;
 	private ThreadPoolTaskExecutor reducerThreadPool;
-	private List<MapperAndReduce> mapperAndReduces;
+	private List<MapperAndReduce> mapperAndReduces = new ArrayList<>();
 
 	@Value("${starrysea.split.input}")
 	private String inputPath;
