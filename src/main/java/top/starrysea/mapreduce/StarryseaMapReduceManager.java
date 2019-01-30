@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadPoolExecutor;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
@@ -13,14 +11,17 @@ public class StarryseaMapReduceManager {
 
 	private ThreadPoolTaskExecutor mapperThreadPool;
 	private ThreadPoolTaskExecutor reducerThreadPool;
-	private List<MapperAndReduce> mapperAndReduces = new ArrayList<>();
+	private List<MapperAndReduce> mapperAndReduces;
 
 	@Value("${starrysea.split.input}")
 	private String inputPath;
 	@Value("${starrysea.split.output}")
 	private String outputPath;
+	
+	public StarryseaMapReduceManager() {
+		init();
+	}
 
-	@PostConstruct
 	private void init() {
 		mapperAndReduces = new ArrayList<>();
 
