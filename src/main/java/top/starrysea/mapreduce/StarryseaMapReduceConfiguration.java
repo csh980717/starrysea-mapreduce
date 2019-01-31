@@ -71,35 +71,35 @@ public class StarryseaMapReduceConfiguration {
 		return this;
 	}
 
-	public String getInputPath() {
+	String getInputPath() {
 		return inputPath;
 	}
 
-	public String getOutputPath() {
+	String getOutputPath() {
 		return outputPath;
 	}
 
-	public int getMapperCorePoolSize() {
+	int getMapperCorePoolSize() {
 		return mapperCorePoolSize;
 	}
 
-	public int getMapperMaximumPoolSize() {
+	int getMapperMaximumPoolSize() {
 		return mapperMaximumPoolSize;
 	}
 
-	public int getReducerCorePoolSize() {
+	int getReducerCorePoolSize() {
 		return reducerCorePoolSize;
 	}
 
-	public int getReducerMaximumPoolSize() {
+	int getReducerMaximumPoolSize() {
 		return reducerMaximumPoolSize;
 	}
 
-	public RejectedExecutionHandler getMapperRejectedExecutionHandler() {
+	RejectedExecutionHandler getMapperRejectedExecutionHandler() {
 		return mapperRejectedExecutionHandler;
 	}
 
-	public RejectedExecutionHandler getReducerRejectedExecutionHandler() {
+	RejectedExecutionHandler getReducerRejectedExecutionHandler() {
 		return reducerRejectedExecutionHandler;
 	}
 
