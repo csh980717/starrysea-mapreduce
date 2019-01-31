@@ -45,11 +45,7 @@ public class SingleMessage {
     }
 
     public String getMonth() {
-        return month;
-    }
-
-    public String getDate() {
-        return head.substring(0, 10);//这是为了输出文件方便直接用的,不是分析出的日期
+        return month.length() == 1 ? "0" + month : month;
     }
 
     public String getId() {
@@ -61,7 +57,7 @@ public class SingleMessage {
     }
 
     public String getDay() {
-        return day;
+        return day.length() == 1 ? "0" + day : day;
     }
 
     public String getHour() {
