@@ -2,14 +2,15 @@ package top.starrysea.mapreduce;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
-
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import java.util.concurrent.TimeUnit;
 
 public class StarryseaMapReduceManager {
 
-	private ThreadPoolTaskExecutor mapperThreadPool;
-	private ThreadPoolTaskExecutor reducerThreadPool;
+	private ExecutorService mapperThreadPool;
+	private ExecutorService reducerThreadPool;
 	private List<MapperAndReduce> mapperAndReduces;
 
 	private String inputPath;
@@ -25,20 +26,12 @@ public class StarryseaMapReduceManager {
 		mapperAndReduces = new ArrayList<>();
 
 		// 初始化mapper的线程池
-		mapperThreadPool = new ThreadPoolTaskExecutor();
-		mapperThreadPool.setCorePoolSize(Runtime.getRuntime().availableProcessors());
-		mapperThreadPool.setMaxPoolSize(10);
-		mapperThreadPool.setQueueCapacity(25);
-		mapperThreadPool.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
-		mapperThreadPool.initialize();
+		mapperThreadPool = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors(), 10, 0L,
+				TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(), new ThreadPoolExecutor.CallerRunsPolicy());
 
 		// 初始化reducer的线程池
-		reducerThreadPool = new ThreadPoolTaskExecutor();
-		reducerThreadPool.setCorePoolSize(Runtime.getRuntime().availableProcessors());
-		reducerThreadPool.setMaxPoolSize(10);
-		reducerThreadPool.setQueueCapacity(25);
-		reducerThreadPool.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
-		reducerThreadPool.initialize();
+		reducerThreadPool = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors(), 10, 0L,
+				TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(), new ThreadPoolExecutor.CallerRunsPolicy());
 	}
 
 	public StarryseaMapReduceManager register(Mapper mapper, Reducer... reducers) {
