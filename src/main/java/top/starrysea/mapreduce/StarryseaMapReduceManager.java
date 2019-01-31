@@ -16,22 +16,26 @@ public class StarryseaMapReduceManager {
 	private String inputPath;
 	private String outputPath;
 
-	public StarryseaMapReduceManager(String inputPath, String outputPath) {
-		this.inputPath = inputPath;
-		this.outputPath = outputPath;
-		init();
+	public StarryseaMapReduceManager(StarryseaMapReduceConfiguration starryseaMapReduceConfiguration) {
+		this.inputPath = starryseaMapReduceConfiguration.getInputPath();
+		this.outputPath = starryseaMapReduceConfiguration.getOutputPath();
+		init(starryseaMapReduceConfiguration);
 	}
 
-	private void init() {
+	private void init(StarryseaMapReduceConfiguration starryseaMapReduceConfiguration) {
 		mapperAndReduces = new ArrayList<>();
 
 		// 初始化mapper的线程池
-		mapperThreadPool = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors(), 10, 0L,
-				TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(), new ThreadPoolExecutor.CallerRunsPolicy());
+		mapperThreadPool = new ThreadPoolExecutor(starryseaMapReduceConfiguration.getMapperCorePoolSize(),
+				starryseaMapReduceConfiguration.getMapperMaximumPoolSize(), 0L, TimeUnit.MILLISECONDS,
+				new LinkedBlockingQueue<Runnable>(),
+				starryseaMapReduceConfiguration.getMapperRejectedExecutionHandler());
 
 		// 初始化reducer的线程池
-		reducerThreadPool = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors(), 10, 0L,
-				TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(), new ThreadPoolExecutor.CallerRunsPolicy());
+		reducerThreadPool = new ThreadPoolExecutor(starryseaMapReduceConfiguration.getReducerCorePoolSize(),
+				starryseaMapReduceConfiguration.getReducerMaximumPoolSize(), 0L, TimeUnit.MILLISECONDS,
+				new LinkedBlockingQueue<Runnable>(),
+				starryseaMapReduceConfiguration.getReducerRejectedExecutionHandler());
 	}
 
 	public StarryseaMapReduceManager register(Mapper mapper, Reducer... reducers) {
