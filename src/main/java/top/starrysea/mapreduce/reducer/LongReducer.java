@@ -1,6 +1,8 @@
 package top.starrysea.mapreduce.reducer;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -9,7 +11,7 @@ import top.starrysea.mapreduce.Reducer;
 
 public abstract class LongReducer extends Reducer {
 
-	private ConcurrentHashMap<String, AtomicLong> reduceResult;
+	private ConcurrentHashMap<String, AtomicLong> reduceResult = new ConcurrentHashMap<>();
 
 	protected void runReducerTask(File path) {
 		ReduceResult<Long> aReduceResult = reduce(path);
@@ -22,4 +24,13 @@ public abstract class LongReducer extends Reducer {
 	}
 
 	protected abstract ReduceResult<Long> reduce(File path);
+
+	@Override
+	protected void handleReduceResult() {
+		Map<String, Long> finalResult = new HashMap<>();
+		for (Map.Entry<String, AtomicLong> entry : reduceResult.entrySet()) {
+			finalResult.put(entry.getKey(), entry.getValue().get());
+		}
+		reduceFinish(finalResult, context);
+	}
 }

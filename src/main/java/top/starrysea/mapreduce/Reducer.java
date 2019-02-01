@@ -2,12 +2,9 @@ package top.starrysea.mapreduce;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 
 import org.slf4j.Logger;
@@ -18,11 +15,9 @@ public abstract class Reducer implements Runnable {
 	protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 	protected MapReduceContext context;
 	protected Function<Runnable, Void> managerThreadPool;
-	private ConcurrentHashMap<String, AtomicLong> reduceResult;
 
 	@Override
 	public final void run() {
-		reduceResult = new ConcurrentHashMap<>();
 		String fileNameWithoutExtension = getFileName().substring(0, getFileName().lastIndexOf('.'));
 		analyze(getInputPath() + "/" + fileNameWithoutExtension + "/" + context.getOutputFileSubType());
 	}
@@ -55,11 +50,7 @@ public abstract class Reducer implements Runnable {
 		fileList.stream().forEach(f -> managerThreadPool.apply(new ReduceTask(f, countDownLatch)));
 		try {
 			countDownLatch.await();
-			Map<String, Long> finalResult = new HashMap<>();
-			for (Map.Entry<String, AtomicLong> entry : reduceResult.entrySet()) {
-				finalResult.put(entry.getKey(), entry.getValue().get());
-			}
-			reduceFinish(finalResult, context);
+			handleReduceResult();
 		} catch (InterruptedException e) {
 			logger.error(e.getMessage(), e);
 			Thread.currentThread().interrupt();
@@ -82,9 +73,9 @@ public abstract class Reducer implements Runnable {
 		}
 	}
 
-//	protected abstract ReduceResult<?> reduce(File path);
-
 	protected abstract void runReducerTask(File path);
+
+	protected abstract void handleReduceResult();
 
 	protected abstract void reduceFinish(Map<String, Long> reduceResult, MapReduceContext context);
 }
