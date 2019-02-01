@@ -11,10 +11,9 @@ import top.starrysea.mapreduce.Reducer;
 
 public abstract class LongReducer extends Reducer {
 
-	private ConcurrentHashMap<String, AtomicLong> reduceResult;
+	private ConcurrentHashMap<String, AtomicLong> reduceResult = new ConcurrentHashMap<>();
 
 	protected void runReducerTask(File path) {
-		reduceResult = new ConcurrentHashMap<>();
 		ReduceResult<Long> aReduceResult = reduce(path);
 		AtomicLong oldResult = new AtomicLong();
 		if (reduceResult.containsKey(aReduceResult.getGroup())) {
@@ -33,5 +32,6 @@ public abstract class LongReducer extends Reducer {
 			finalResult.put(entry.getKey(), entry.getValue().get());
 		}
 		reduceFinish(finalResult, context);
+		reduceResult.clear();
 	}
 }
