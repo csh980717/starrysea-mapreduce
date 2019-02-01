@@ -121,7 +121,7 @@ public abstract class Mapper implements Runnable {
 	}
 
 	private void execStr(String str, MapReduceContext context) {
-		String pattern = "\\d{4}-\\d{2}-\\d{2} \\d{1,2}:\\d{2}:\\d{2} .+([<(]).+([>)])";
+		String pattern = "\\d{4}-\\d{2}-\\d{2} \\d{1,2}:\\d{2}:\\d{2} .*([<(]).+([>)])";
 		// 用于判断单个群聊聊天记录开头(日期,昵称,QQ号或邮箱)的正则表达式
 		if (str == null)
 			return;
