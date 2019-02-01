@@ -102,9 +102,9 @@ public class SingleMessage {
 
     public static SingleMessage stringToMessage(String message){
         SingleMessage singleMessage = new SingleMessage();
-        String head = message.substring(0, message.indexOf("\n"));
+        String head = message.substring(0, message.indexOf("\\n"));
         singleMessage.setHead(head);
-        singleMessage.setBody(message.substring(message.indexOf("\n") + 2));
+        singleMessage.setBody(message.substring(message.indexOf("\\n") + 2));
         return singleMessage;
     }
 }
