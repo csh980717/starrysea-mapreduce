@@ -61,20 +61,20 @@ public class SingleMessage {
     }
 
     public String getHour() {
-        return hour;
+        return hour.length() == 1 ? "0" + hour : hour;
     }
 
     public String getMinute() {
-        return minute;
+        return minute.length() == 1 ? "0" + minute : minute;
     }
 
     public String getSecond() {
-        return second;
+        return second.length() == 1 ? "0" + second : second;
     }
 
     private void analyze() {
-        String patternQQ = "\\d{4}-\\d{2}-\\d{2} \\d{1,2}:\\d{2}:\\d{2} .+([(]).+([)])";
-        String patternMail = "\\d{4}-\\d{2}-\\d{2} \\d{1,2}:\\d{2}:\\d{2} .+([<]).+([>])";
+        String patternQQ = "\\d{4}-\\d{2}-\\d{2} \\d{1,2}:\\d{2}:\\d{2} .*([(]).+([)])";
+        String patternMail = "\\d{4}-\\d{2}-\\d{2} \\d{1,2}:\\d{2}:\\d{2} .*([<]).+([>])";
         //区分不同的账号类型，有QQ号还有邮箱
         String time = head.substring(0, 19).trim();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd H:mm:ss");
@@ -98,5 +98,13 @@ public class SingleMessage {
             id = head.substring(head.lastIndexOf('<') + 1, head.lastIndexOf('>'));
             nickname = head.substring(head.indexOf(' ', 11) + 1, head.lastIndexOf('<')).trim();
         }
+    }
+
+    public static SingleMessage stringToMessage(String message){
+        SingleMessage singleMessage = new SingleMessage();
+        String head = message.substring(0, message.indexOf("\n"));
+        singleMessage.setHead(head);
+        singleMessage.setBody(message.substring(message.indexOf("\n") + 2));
+        return singleMessage;
     }
 }
