@@ -3,7 +3,6 @@ package top.starrysea.mapreduce;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.function.Function;
 
@@ -77,5 +76,4 @@ public abstract class Reducer implements Runnable {
 
 	protected abstract void handleReduceResult();
 
-	protected abstract void reduceFinish(Map<String, Long> reduceResult, MapReduceContext context);
 }

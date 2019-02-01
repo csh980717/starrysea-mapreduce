@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
+import top.starrysea.mapreduce.MapReduceContext;
 import top.starrysea.mapreduce.ReduceResult;
 import top.starrysea.mapreduce.Reducer;
 
@@ -34,4 +35,6 @@ public abstract class LongReducer extends Reducer {
 		reduceFinish(finalResult, context);
 		reduceResult.clear();
 	}
+
+	protected abstract void reduceFinish(Map<String, Long> reduceResult, MapReduceContext context);
 }
