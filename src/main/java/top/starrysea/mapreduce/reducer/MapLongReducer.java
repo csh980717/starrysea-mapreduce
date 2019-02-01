@@ -25,6 +25,13 @@ public abstract class MapLongReducer extends Reducer {
 					entry.getValue().addAndGet(aReduceResult.getResult().get(entry.getKey()));
 				}
 			}
+		} else {
+			Map<String, AtomicLong> oldReduceResult = new HashMap<>();
+			for (Map.Entry<String, Long> entry : aReduceResult.getResult().entrySet()) {
+				AtomicLong count = new AtomicLong(entry.getValue());
+				oldReduceResult.put(entry.getKey(), count);
+			}
+			reduceResult.put(aReduceResult.getGroup(), oldReduceResult);
 		}
 		reduceResult.put(aReduceResult.getGroup(), oldResult);
 	}
