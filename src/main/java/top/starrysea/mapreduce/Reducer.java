@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 public abstract class Reducer implements Runnable {
 
 	protected final Logger logger = LoggerFactory.getLogger(this.getClass());
-	private MapReduceContext context;
+	protected MapReduceContext context;
 	protected Function<Runnable, Void> managerThreadPool;
 	private ConcurrentHashMap<String, AtomicLong> reduceResult;
 
@@ -77,18 +77,14 @@ public abstract class Reducer implements Runnable {
 
 		@Override
 		public void run() {
-			ReduceResult aReduceResult = reduce(path);
-			AtomicLong oldResult = new AtomicLong();
-			if (reduceResult.containsKey(aReduceResult.getGroup())) {
-				oldResult = reduceResult.get(aReduceResult.getGroup());
-			}
-			oldResult.addAndGet(aReduceResult.getResult());
-			reduceResult.put(aReduceResult.getGroup(), oldResult);
+			runReducerTask(path);
 			countDownLatch.countDown();
 		}
 	}
 
-	protected abstract ReduceResult reduce(File path);
+//	protected abstract ReduceResult<?> reduce(File path);
+
+	protected abstract void runReducerTask(File path);
 
 	protected abstract void reduceFinish(Map<String, Long> reduceResult, MapReduceContext context);
 }

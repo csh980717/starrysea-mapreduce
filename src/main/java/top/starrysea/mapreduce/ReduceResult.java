@@ -1,24 +1,24 @@
 package top.starrysea.mapreduce;
 
-public class ReduceResult {
+public class ReduceResult<T> {
 
 	private String group;
-	private long result;
+	private T result;
 
-	private ReduceResult(String group, long result) {
+	private ReduceResult(String group, T result) {
 		this.group = group;
 		this.result = result;
 	}
 
-	public static ReduceResult of(String group, long result) {
-		return new ReduceResult(group, result);
+	public static <T> ReduceResult<T> of(String group, T result) {
+		return new ReduceResult<>(group, result);
 	}
 
 	public String getGroup() {
 		return group;
 	}
 
-	public long getResult() {
+	public T getResult() {
 		return result;
 	}
 
