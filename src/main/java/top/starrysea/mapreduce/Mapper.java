@@ -127,6 +127,7 @@ public abstract class Mapper implements Runnable {
 			return;
 		if (Pattern.matches(pattern, str)) {
 			if (singleMessage != null) {
+                singleMessage.setBody(singleMessage.getBody().replace("\\n\\n", ""));
 				map(singleMessage, context);
 			}
 			singleMessage = new SingleMessage();
